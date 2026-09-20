@@ -1913,3 +1913,33 @@ The 7×7 grid string, the E-zeroed 58-character phrase, the raw I/O mask, and th
 hashes — against the recovered Cosmic Duality blob (printable-first-block filter),
 both 80-byte locks, and as brainwallet keys against the third door, prize and all ten
 planted addresses. No match anywhere.
+
+## 43. Chronological-order token concatenation
+
+Every prior concatenation attempt in this file combined tokens out of reading order:
+section 38 permutes and interleaves the seven phase-3 parts, section 26 covers the
+community's specific seven-token XOR construction. None tried the one ordering a
+solver actually accumulates while reading the puzzle start to finish — every
+confirmed token, in the sequence the puzzle reveals it, phase 0 through phase 3.2.
+
+`tools/chrono_chain.py` fixes that ordering as one list (`CHAIN`, 11 entries: the
+theseedisplanted URL, the phase-1 password, the five SalPhaseIon page tokens, the
+`causality` header, the four Safenet/Luna/HSM/11110 phase-3 fragments treated as one
+step, the genesis-coinbase hex, the FEN string, the phase-3.2 password, and
+`yinyang`) and generates two candidate families from it: the full concatenation (and
+its reverse), and every growing stage-by-stage prefix — both concatenated tightly and
+space-joined — since a solver reading in order holds exactly those prefixes before
+reaching the end. 34 distinct strings, each tried raw, lowercased, and as SHA-256 hex
+(upper and lower case) — 136 password forms total.
+
+Tested against all three objects this file tracks:
+
+| Target | Method | Result |
+|---|---|---|
+| Cosmic Duality blob | printable-first-block filter, 816 candidates tried | 1 noise hit (pr=12/16, no valid padding) — not a match |
+| Both 80-byte locks | padding + printable-ratio oracle, 952 candidates tried | 5 noise hits (single-byte padding, low printable%), zero FULLPAD or readable plaintext |
+| Third door, prize, all ten planted addresses | brainwallet address derivation | only the two already-known door preimages reappear (self-validation, not a new find) |
+
+No match anywhere. Consistent with the rest of this file's concatenation attempts:
+the tokens the puzzle confirms do not combine into a working key under any ordering
+tried so far, chronological included.
