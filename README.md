@@ -2005,3 +2005,40 @@ and nothing marks the difference until someone runs the numbers.
 hint images (2020–2024) not present in the files this repository built its corpus from. Not
 yet cross-checked against the image work in sections 10 and 19 — recorded as an open
 resource, not a result.
+
+## 46. Working through PR #30's dated hint images
+
+Followed through on section 45's open item. Reviewed the ten hint images from 2023 and 2024
+(after Cosmic Duality's release, so the ones most likely to bear on the still-open endgame)
+plus the book-cover photo.
+
+**The February 23, 2023 image is a 161-byte binary dump, and it decodes cleanly — to
+already-known text.** Each of the 161 space-separated 8-bit groups has bits reversed (LSB
+first) relative to standard ASCII, and the resulting character sequence is reversed as a
+whole; undoing both gives, directly, `yellowblueprimesmatrixsumlistlastwordsbeforearchichoic
+eyinyangwewontgiveawaythepassworditsinfrontofyoureyesbutyourenotseeingitverylaststepisatrueg
+iveawaypromised`. That is exactly the creator-hint string already in
+`data/eyes-phrase-candidates.txt` and covered by section 37 — this is independent
+confirmation the transcription this repository works from is correct, not a new string.
+`tools/decode_feb23_hint.py` and `data/feb23_bytes.txt` record the transcription and the
+two-step decode.
+
+**The cover photo confirms Cosmic Duality is a real, identifiable book.** *Mysteries of the
+Unknown: Cosmic Duality*, Time-Life Books, 1991, 144 pages, ISBN 9780809465163 — not just a
+theme name for the AES blob, an actual title. It is listed on the Internet Archive
+(`archive.org/details/cosmicdualitymys0000time`) as a controlled-digital-lending title; that
+domain is blocked by this environment's network egress policy, so its OCR text could not be
+pulled here. PR #93's `FINDINGS.md` claims a "0/27" book-cipher result against it, but ships
+no OCR file or script for that specific book (only for the other reference title), so that
+result cannot be verified either. A properly parameterised book cipher against this book's
+actual text — page/line/word coordinates built from the puzzle's own numbers, not a bare
+word search — is a genuine, untried, and currently blocked lead. Recorded as open, not
+negative: this was never tested here, for lack of the text rather than for a result that
+failed.
+
+**The rest carry no new cipher-relevant content.** The remaining eight images (Aug 3 and Aug
+6, 2023; two from April 19, 2024; one from April 10, 2024) are banter and philosophical
+flavor text — halving countdowns, "are you really looking for just the btc," "once you hit a
+'ying yang' you'll be able to solve it the same day," a confirmation that the "salvation"
+third-door text (already covered in section 34) is only "partly" passed. Nothing in them
+names an object, a number, or a word this repository had not already logged.
