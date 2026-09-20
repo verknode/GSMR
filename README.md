@@ -2042,3 +2042,43 @@ flavor text — halving countdowns, "are you really looking for just the btc," "
 'ying yang' you'll be able to solve it the same day," a confirmation that the "salvation"
 third-door text (already covered in section 34) is only "partly" passed. Nothing in them
 names an object, a number, or a word this repository had not already logged.
+
+## 47. `seg0` minus the phase-3.2.2 plaintext, mod 26 — real, but half the claimed signal
+
+Raised in a parallel session, not found here first: subtract `seg0` (`dbbi`, 91 letters)
+from the already-solved phase-3.2.2 VIC plaintext — `INCASEYOUMANAGETOCRACKTHISTHEPRIVATE
+KEYSBELONGTOHALFANDBETTERHALFANDTHEYALSONEEDFUNDSTOLIVE`, also 91 letters, which is a fixed
+puzzle fact rather than a chosen match — letter by letter, mod 26. Reproduced here from this
+repository's own `data/seg0.txt`, independent of whatever produced the original claim:
+
+```
+VOZIJBDTIQBRGVEOMZNBCYOUWONXCPKWGBNAXDGJGDUNNVMPABTAFPAAXMJYLZBUWERDNXYDESKUOBXCAMVDJLQTSGA
+```
+
+Positions 1, 4 and 21 are `V`, `I`, `C`; positions 22–27 spell `YOUWON`; a 64-letter tail
+follows. `tools/seg0_vic_diff.py` reproduces it and generates the candidates below.
+
+The quoted odds for this (~3.2×10⁻⁶) treated `YOUWON` and the three `VIC` letters as
+independent — this repository's practice throughout (sections 16, 17, 29, 39, 41, 42) is
+never to take a quoted probability at face value. `tools/seg0_vic_diff_null.py` shuffles
+`seg0`'s own 91 letters against the same fixed plaintext, 200,000 times:
+
+| Event | Rate |
+|---|---|
+| The exact claimed pattern (`V`@1, `I`@4, `C`@21, `YOUWON`@22–27, together) | 0 of 200,000 |
+| `VIC` as a loose in-order subsequence, anywhere in the 91 letters | 0.693 |
+| Any contiguous 6-letter dictionary word, anywhere | 0.0086 |
+
+The combined literal pattern is genuinely rare, consistent with the order of magnitude
+quoted — that part holds up. But it is not three independent rare events: `VIC` scattered
+anywhere in order is close to a coin flip, so it adds almost nothing once `YOUWON` is
+already found. The entire signal is `YOUWON` landing as a real contiguous word, which is a
+real but much smaller effect (roughly 1 in 116) than advertised, and exactly the kind of
+one-sided arithmetic this file keeps having to correct in other reader submissions.
+
+**Tested anyway**, because the object is real and reproducible even with the corrected
+odds: the 64-letter tail and the full 91-letter diff, raw/lowercase/SHA-256, `YOUWON`- and
+`VIC`-prefixed, and the tail's letters packed two-at-a-time base-26 into 32 raw bytes (a
+direct AES-256 key, not a password) — against Cosmic Duality (printable-first-block filter,
+and the packed key tried directly under three IV assumptions), both small locks, and the
+third door, prize and all planted addresses. No match anywhere.
