@@ -2042,3 +2042,31 @@ flavor text — halving countdowns, "are you really looking for just the btc," "
 'ying yang' you'll be able to solve it the same day," a confirmation that the "salvation"
 third-door text (already covered in section 34) is only "partly" passed. Nothing in them
 names an object, a number, or a word this repository had not already logged.
+
+## 47. PBKDF2, not the classic `EVP_BytesToKey`, against all three blobs
+
+Every key derivation anywhere in this file, section 40's iteration-count sweep included,
+implements OpenSSL's legacy digest-chaining `EVP_BytesToKey`. That is one of two KDFs
+`openssl enc -aes-256-cbc` can use — the other is real PBKDF2-HMAC, selected with the
+`-pbkdf2` flag, standard since OpenSSL 1.1.0. Both write the identical `Salted__` +
+8-byte-salt header; nothing about a blob's visible format says which one made it. This had
+not been tried.
+
+`tools/pbkdf2_crack.py` implements PBKDF2-HMAC-SHA256 for a 48-byte key+IV, the same
+output shape as `EVP_BytesToKey` uses everywhere else here. Cross-checked against an
+independent from-scratch HMAC construction across three iteration counts (1, 10,000, 23) —
+byte-identical, confirming the derivation before using it on anything.
+
+Tried at `10,000` (OpenSSL's own `-pbkdf2` default), `1,000`, and the puzzle's own
+thematic numbers `16`, `23`, `7` (section 40's readings of "sixteen encryptions," the
+object's 23-symbol alphabet, and "seven intertwined passwords"):
+
+| Target | Candidates | Result |
+|---|---|---|
+| Both small locks | ~325 curated (eyes/door/token candidates, all stage passwords), 5 iteration counts | 14 padding-only hits, all confirmed noise on full decrypt |
+| Cosmic Duality | Same 325, 5 iteration counts | 1 printable-block hit (`THEDOORTOYOURRIGHT`, count 1,000), confirmed noise on full decrypt |
+| Cosmic Duality | 10,000-word English list + the 325 curated, count 10,000 only | 25 printable-block hits at the ≥12/16 threshold — the expected false-positive rate for that filter, not `ccrack.c`'s tighter full-block one; all garbage past the printable prefix |
+
+**Negative**, and worth keeping distinct from section 40: this is a structurally different
+KDF, not another iteration count for the same one, so it closes off a real alternative
+rather than repeating the existing check under a new label.
