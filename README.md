@@ -1963,3 +1963,45 @@ forms — 140 candidates. Tested against all three tracked objects: 3 noise hits
 Cosmic Duality (printable-first-block filter, none with valid padding), 3 noise
 hits across both small locks (single-byte padding only, no FULLPAD), zero address
 matches against the third door, prize, or any planted address. No match anywhere.
+
+## 45. Surveying the upstream repository's unmerged pull requests
+
+Every source checked so far (community README, floflo777, devjotaduo) is a repository or
+fork someone chose to publicize. The upstream repository itself carries eleven open pull
+requests nobody has merged — a different kind of source, since a PR sits there because its
+own content didn't convince a maintainer, not because nobody looked. Mirrored with
+`git clone --mirror` and diffed against `master` one by one.
+
+**PR #93 is substantial and code-backed, and corroborates this file's strongest result.**
+Its `FINDINGS.md` independently identifies `seg0` (its `dbbi`) as the straddling-checkerboard
+key and `seg2` (its `faed`) as the ciphertext, reconstructs the same `DBIFHCEG` square, and
+— without having seen this repository — lands on escape digits **1 and 4**, which is exactly
+the pair `tools/decode_vic.py` already uses for the *separately* solved phase-3.2.2 segment
+(section 8's `decode_vic.py` docstring cites the riddle that fixes them there). Two
+independent reconstructions naming the same escapes is real corroboration. Its own `_work/`
+scripts run a 4,904-candidate joint attack over {alphabet × mapping × escapes ×
+transposition × over-encryption}, verified only against the real AES oracle rather than an
+English-language score, and get zero hits — an independent negative that lines up with this
+file's section 20 cipher-menu sweep. One place it is simply behind this repository: it
+treats `seg2`/`faed` as an *unsolved* high-entropy payload, where section 8 here decodes it
+in full, opening `BTCSEED...`. That correction is worth feeding back if anyone picks the PR
+up.
+
+**PR #68 (`GAP_ANALYSIS.md`) does not hold up.** It claims Cosmic Duality is already
+decrypted, gives a specific 32-byte "derived key"
+(`a795de117e472590e572dc193130c763e3fb555ee5db9d34494e156152e50735`) and a specific
+plaintext SHA-256, but ships no code — every other credible submission in this survey,
+including PR #93 and this repository, ships the script that produces its numbers. Decrypting
+the actual recovered blob (`data/cosmic-duality.b64`) with that exact key, tried as a raw
+AES-256 key against the first ciphertext block under three different IV assumptions (zero,
+salt-doubled, key-tail), produces 5, 6 and 7 printable bytes of 16 respectively — noise, not
+the claimed plaintext. The document also cites a "Norton's theorem" clue from the phase-3
+riddle; that string does not appear anywhere in `corpus.txt`–`corpus4.txt` or any transcribed
+puzzle page assembled for this repository. Recorded here as a caution, not an accusation: a
+plausible-reading, unsourced analysis document sits in the same open-PR list as real work,
+and nothing marks the difference until someone runs the numbers.
+
+**PR #30** reorganizes the whole README around per-phase notebooks and adds roughly 40 dated
+hint images (2020–2024) not present in the files this repository built its corpus from. Not
+yet cross-checked against the image work in sections 10 and 19 — recorded as an open
+resource, not a result.
