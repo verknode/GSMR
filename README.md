@@ -1943,3 +1943,23 @@ Tested against all three objects this file tracks:
 No match anywhere. Consistent with the rest of this file's concatenation attempts:
 the tokens the puzzle confirms do not combine into a working key under any ordering
 tried so far, chronological included.
+
+## 44. The FEN string, actually solved rather than treated as text
+
+Every use of the phase-3 FEN so far, including section 43's chain, has treated it
+as an opaque string and hashed or concatenated it as such. Nobody in this file had
+put it through an engine. `tools/chess_solve.py` does.
+
+`B5KR/1r5B/2R5/2b1p1p1/2P1k1P1/1p2P2p/1P2P2P/3N1N2 b - - 0 1` is not a "find the
+mate" composition. Stockfish's own perft-1 confirms it directly: black's king is in
+check from the bishop on h7, and there is exactly one legal move in the entire
+position — `Rb7xh7`, the forced recapture. There is nothing to solve beyond that;
+no mate, no multi-move combination, no branch to choose between.
+
+That forced move was tried as key material anyway, in every case-form (`Rxh7`,
+`Rh7`, `b7h7`, upper/lower), standalone and substituted for or appended after the
+raw FEN inside section 43's chronological chain, each in raw/lowercase/SHA-256
+forms — 140 candidates. Tested against all three tracked objects: 3 noise hits on
+Cosmic Duality (printable-first-block filter, none with valid padding), 3 noise
+hits across both small locks (single-byte padding only, no FULLPAD), zero address
+matches against the third door, prize, or any planted address. No match anywhere.
